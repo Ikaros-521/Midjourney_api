@@ -32,10 +32,15 @@ class Receiver:
         self.channelid=params['channelid']
         self.authorization=params['authorization']
         self.headers = {'authorization' : self.authorization}
+        if params['proxy']:
+            # 代理服务器的IP地址和端口号
+            self.proxy = {'http': params['http_proxy'], 'https': params['https_proxy']}
+        else:
+            self.proxy = None
 
     def retrieve_messages(self):
         r = requests.get(
-            f'https://discord.com/api/v10/channels/{self.channelid}/messages?limit={100}', headers=self.headers)
+            f'https://discord.com/api/v10/channels/{self.channelid}/messages?limit={100}', headers=self.headers, proxies = self.proxy)
         jsonn = json.loads(r.text)
         return jsonn
 
@@ -92,7 +97,7 @@ class Receiver:
         processed_prompts = []
         for i in self.df.index:
             if self.df.loc[i].is_downloaded == 0:
-                response = requests.get(self.df.loc[i].url)
+                response = requests.get(self.df.loc[i].url, proxies = self.proxy)
                 with open(os.path.join(self.local_path, self.df.loc[i].filename), "wb") as req:
                     req.write(response.content)
                 self.df.loc[i, 'is_downloaded'] = 1

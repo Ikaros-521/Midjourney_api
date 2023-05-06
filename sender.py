@@ -26,7 +26,11 @@ class Sender:
         self.version = params['version']
         self.id = params['id']
         self.flags = params['flags']
-        
+        if params['proxy']:
+            # 代理服务器的IP地址和端口号
+            self.proxy = {'http': params['http_proxy'], 'https': params['https_proxy']}
+        else:
+            self.proxy = None
         
     def send(self, prompt):
         header = {
@@ -52,9 +56,9 @@ class Sender:
             'attachments': []}
             }
         
-        r = requests.post('https://discord.com/api/v9/interactions', json = payload , headers = header)
+        r = requests.post('https://discord.com/api/v9/interactions', json = payload , headers = header, proxies = self.proxy)
         while r.status_code != 204:
-            r = requests.post('https://discord.com/api/v9/interactions', json = payload , headers = header)
+            r = requests.post('https://discord.com/api/v9/interactions', json = payload , headers = header, proxies = self.proxy)
 
         print('prompt [{}] successfully sent!'.format(prompt))
 

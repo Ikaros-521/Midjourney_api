@@ -1,1 +1,13 @@
-{"channelid": "", "authorization": "", "application_id": "", "guild_id": "", "session_id": "", "version": "", "id": "", "flags": "--v 5"}
+{
+    "channelid": "",
+    "authorization": "",
+    "application_id": "",
+    "guild_id": "",
+    "session_id": "",
+    "version": "",
+    "id": "",
+    "flags": "--v 5",
+    "proxy": false,
+    "http_proxy": "http://127.0.0.1:10810",
+    "https_proxy": "http://127.0.0.1:10810"
+}
